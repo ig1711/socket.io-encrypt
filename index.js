@@ -1,5 +1,5 @@
-const Cryptr = require('cryptr');
-const crypto = require('crypto');
+const Cryptr = require('./lib/browser-crypter');
+const crypto = require('crypto-browserify');
 const { Manager } = require('socket.io-client');
 const { emit, on, off, removeEventListener, removeListener } = require('./symbol');
 const reservedEvents = require('./reserved-events');

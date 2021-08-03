@@ -1,10 +1,10 @@
 # socket.io-encrypt
 
-Patches `socket.emit` and and `socket.on` functions to send encrypted and decrypt messages using **[cryptr]**.
+Patches `socket.emit` and and `socket.on` functions to send encrypted and decrypt messages using **[crypto-browserify]**.
 
 In HTTPS and WSS connections, data are already encrypted in a similar manner but they are still visible in browser dev tools. My purpose of this is to hide data there.
 
-[cryptr]: https://github.com/MauriceButler/cryptr
+[crypto-browserify]: https://github.com/crypto-browserify/crypto-browserify
 
 ## Install
 
