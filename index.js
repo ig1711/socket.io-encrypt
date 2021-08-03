@@ -13,7 +13,7 @@ module.exports = (key) => (socketParam, next) => {
 		const encryptedSecretBuffer = crypto.publicEncrypt(key, secretBuffer);
 		const encryptedSecret = encryptedSecretBuffer.toString('hex');
 		if (!encryptedSecret) throw new Error('Couldn\'t generate encryptedSecret');
-		const manager = new Manager(socketParam.io.uri);
+		const manager = new Manager(socketParam.io.uri, { withCredentials: true });
 		socketParam.disconnect();
 		socket = manager.socket(socketParam.nsp, {
 			auth: {
