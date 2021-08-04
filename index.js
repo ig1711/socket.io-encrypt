@@ -54,7 +54,6 @@ module.exports = (key) => (socketParam, next) => {
 		try {
 			return encrypted.map(a => JSON.parse(cryptr.decrypt(a)));
 		} catch (e) {
-			console.log(e);
 			const error = new Error(`Couldn't decrypt. Wrong secret used on client or invalid data sent. (${e.message})`);
 			error.code = 'ERR_DECRYPTION_ERROR';
 			throw error;
