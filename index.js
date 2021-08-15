@@ -1,5 +1,6 @@
 const Cryptr = require('./lib/browser-crypter');
-const crypto = require('crypto-browserify');
+// const crypto = require('crypto-browserify');
+const { randomBytes, publicEncrypt, privateDecrypt } = require('crypto-browserify');
 const { Manager } = require('socket.io-client');
 const { emit, on, off, removeEventListener, removeListener } = require('./symbol');
 const reservedEvents = require('./reserved-events');
@@ -7,10 +8,10 @@ const reservedEvents = require('./reserved-events');
 module.exports = (key) => (socketParam, next) => {
 	let socket, secret;
 	if (!next) {
-		const secretBuffer = crypto.randomBytes(64);
+		const secretBuffer = randomBytes(64);
 		secret = secretBuffer.toString('hex');
 		if (!secret) throw new Error('Couldn\'t generate secret');
-		const encryptedSecretBuffer = crypto.publicEncrypt(key, secretBuffer);
+		const encryptedSecretBuffer = publicEncrypt(key, secretBuffer);
 		const encryptedSecret = encryptedSecretBuffer.toString('hex');
 		if (!encryptedSecret) throw new Error('Couldn\'t generate encryptedSecret');
 		const manager = new Manager(socketParam.io.uri, socketParam.io.opts);
@@ -25,7 +26,7 @@ module.exports = (key) => (socketParam, next) => {
 		socket = socketParam;
 		if (!socket.handshake.auth || !socket.handshake.auth.encryptedSecret) throw new Error('encryptedSecret missing in handshake');
 		const encryptedSecretBuffer = Buffer.from(socket.handshake.auth.encryptedSecret, 'hex');
-		const decryptedSecretBuffer = crypto.privateDecrypt(key, encryptedSecretBuffer);
+		const decryptedSecretBuffer = privateDecrypt(key, encryptedSecretBuffer);
 		secret = decryptedSecretBuffer.toString('hex');
 		if (!secret) throw new Error('Failed to decrypt secret');
 	}
